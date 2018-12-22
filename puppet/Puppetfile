@@ -8,10 +8,11 @@ forge "https://forgeapi.puppetlabs.com"
 
 # Puppet Supported Modules
 # https://forge.puppetlabs.com/supported
-mod 'puppetlabs/stdlib'
-mod 'puppetlabs/firewall'
-mod 'puppetlabs/java'
-mod 'puppetlabs/apache'
+mod 'puppet-selinux', '1.6.1'
+mod 'puppetlabs-stdlib', '5.1.0'
+mod 'puppetlabs-firewall', '1.14.0'
+mod 'puppetlabs-java', '3.2.0'
+mod 'puppetlabs-apache', '3.5.0'
 
 #mod 'puppetlabs/concat'
 #mod 'puppetlabs/inifile'
@@ -22,5 +23,4 @@ mod 'puppetlabs/apache'
 mod 'maestrodev/wget'
 mod 'rodjek/logrotate'
 
-mod 'bstopp-aem',
-  :git => 'http://github.com/bstopp/puppet-aem.git'
+mod 'bstopp-aem', '2.6.1'

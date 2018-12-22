@@ -17,6 +17,12 @@ service { 'firewalld' :
   enable => false,
 }
 
+class { selinux:
+  mode => 'permissive',
+  type => 'targeted',
+}
+
+
 # Apahe Configurations
 
 $apache_dirs = [ '/var/www',
