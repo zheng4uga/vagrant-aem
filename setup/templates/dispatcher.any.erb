@@ -18,59 +18,56 @@
         /port "4503"
       }
     }
-
     /filter
-          {
-          # Deny everything first and then allow specific entries
-          /0001 { /type "deny" /glob "*" }
+    {
+        # deny everything and allow specific entries
 
-          # Open consoles
-    #     /0011 { /type "allow" /url "/admin/*"  }  # allow servlet engine admin
-    #     /0012 { /type "allow" /url "/crx/*"    }  # allow content repository
-    #     /0013 { /type "allow" /url "/system/*" }  # allow OSGi console
+        /0001 { /type "deny" /glob "*" }
+        #open consoles
+        #/0012 { /type "allow" /glob "* /crx/*" } # allow content repository
+        #/0013 { /type "allow" /glob "* /system/*" } # allow OSGi console
+        #allow non-public content directories
+        /0021 { /type "allow" /glob "* /apps/*" } # allow apps access
+        /0022 { /type "allow" /glob "* /bin/*" }
+        /0029 { /type "allow" /glob "* /etc/designs/unav/*" } # allow unav access
+        /0030 { /type "allow" /glob "* /content/unav/*" } # allow unav access
+        /0023 { /type "allow" /glob "* /content/*" } # disable this rule to allow mapped content only
+         # /0024 { /type "allow" /glob "* /libs/*" }
+         # /0025 { /type "deny" /glob "* /libs/shindig/proxy*" } # if you enable /libs close access to proxy
+         # /0026 { /type "allow" /glob "* /home/*" }
+         # /0027 { /type "allow" /glob "* /tmp/*" }
+         # /0028 { /type "allow" /glob "* /var/*" }
+         # enable specific mime types in non-public content directories
+        /0041 { /type "allow" /glob "* *.css *" } # enable css
+        /0042 { /type "allow" /glob "* *.gif *" } # enable gifs
+        /0043 { /type "allow" /glob "* *.ico *" } # enable icos
+        /0044 { /type "allow" /glob "* *.js *" } # enable javascript
+        /0045 { /type "allow" /glob "* *.png *" } # enable png
+        /0046 { /type "allow" /glob "* *.swf *" } # enable flash
+        /0047 { /type "allow" /glob "* *.svg *" } # enable SVG
+        /0048 { /type "allow" /glob "* *.woff *" } # enable woff
+        /0049 { /type "allow" /glob "* *.ttf *" } # enable ttf
+        /0050 { /type "allow" /glob "* *.eot *" } # enable eot
+        /0051 { /type "allow" /glob "* *.jpg *" } # enable jpg
 
-          # Allow non-public content directories
-    #     /0021 { /type "allow" /url "/apps/*"   }  # allow apps access
-    #     /0022 { /type "allow" /url "/bin/*"    }
-          /0023 { /type "allow" /url "/content*" }  # disable this rule to allow mapped content only
+            # enable features
+        /0061 { /type "allow" /glob "POST /content/[.]*.form.html" } # allow POSTs to form selectors under content
+        /0062 { /type "allow" /glob "* /libs/cq/personalization/*" } # enable personalization
+        /0063 { /type "allow" /glob "POST /content/[.]*.commerce.cart.json" } # allow POSTs to update the shopping cart
 
-    #     /0024 { /type "allow" /url "/libs/*"   }
-    #     /0025 { /type "deny"  /url "/libs/shindig/proxy*" } # if you enable /libs close access to proxy
+        # deny content grabbing
+        /0081 { /type "deny" /glob "GET *.infinity.json*" }
+        /0082 { /type "deny" /glob "GET *.tidy.json*" }
+        /0083 { /type "deny" /glob "GET *.sysview.xml*" }
+        /0084 { /type "deny" /glob "GET *.docview.json*" }
+        /0085 { /type "deny" /glob "GET *.docview.xml*" }
+        /0086 { /type "deny" /glob "GET *.*[0-9].json*" }
+        /0087 { /type "deny" /glob "GET *.feed.xml*" }
+        # /0088 { /type "allow" /glob "GET *.1.json*" } # allow one-level json requests
 
-    #     /0026 { /type "allow" /url "/home/*"   }
-    #     /0027 { /type "allow" /url "/tmp/*"    }
-    #     /0028 { /type "allow" /url "/var/*"    }
-
-          # Enable extensions in non-public content directories, using a regular expression
-          /0041
-            {
-            /type "allow"
-            /extension '(clientlibs|css|gif|ico|js|png|swf|jpe?g|woff2?)'
-            }
-
-          # Enable features
-          /0062 { /type "allow" /url "/libs/cq/personalization/*"  }  # enable personalization
-
-          # Deny content grabbing, on all accessible pages, using regular expressions
-          /0081
-            {
-            /type "deny"
-            /selectors '((sys|doc)view|query|[0-9-]+)'
-            /extension '(json|xml)'
-            }
-          # Deny content grabbing for /content
-          /0082
-            {
-            /type "deny"
-            /path "/content"
-            /selectors '(feed|rss|pages|languages|blueprint|infinity|tidy)'
-            /extension '(json|xml|html)'
-            }
-
-          # Uncomment the following to allow one-level json requests
-    #     /0087 { /type "allow" /method "GET" /extension "json" /selectors "1" }
-
-          }
+        # deny query
+        /0090 { /type "deny" /glob "* *.query.json*" }
+    }
 
     # The cache section regulates what responses will be cached and where.
     /cache
@@ -83,19 +80,99 @@
 
       /serveStaleOnError "0"
 
-        /rules
-        {
+      /rules
+      {
         /0000
           {
-          # the globbing pattern to be compared against the url
-          # example: *             -> everything
-          #        : /foo/bar.*    -> only the /foo/bar documents
-          #        : /foo/bar/*    -> all pages below /foo/bar
-          #        : /foo/bar[./]* -> all pages below and /foo/bar itself
-          #        : *.html        -> all .html files
           /glob "*"
           /type "allow"
+	      /compress "gzip"
           }
+        /0001
+          {
+          /glob "/libs/*"
+          /type "allow"
+          }
+        /0002
+          {
+          /glob "/libs/*.html"
+          /type "deny"
+          }
+        /0003
+          {
+          /glob "/apps/*"
+          /type "allow"
+          }
+        /0004
+          {
+          /glob "/apps/*.html"
+          /type "deny"
+          }
+        /0005
+          {
+          /glob "/content/*.MA.html"
+          /type "deny"
+          }
+          /0006
+          {
+          /glob "/content/*.ma.html"
+          /type "deny"
+          }
+          /0007
+          {
+          # This page contains a "Welcome, User XXX" message
+          /glob "/libs/cq/core/content/welcome.*"
+          /type "deny"
+          }
+          /0008
+          {
+          /glob "*/fonts/*"
+          #
+          /type "allow"
+          }
+          /0009
+          {
+          /glob "*/login.html"
+          /type "deny"
+          }
+          ####-- clear cache starts for feature phone --
+          /0010
+          {
+          /glob "*/feature/*.html"
+          /type "deny"
+          }
+          /0011
+          {
+          /glob "*/feature/*.css"
+          /type "deny"
+          }
+              /0012
+           {
+           /glob "*/data-limit-status.html"
+           /type "deny"
+           }
+
+            /0013
+          {
+          /glob "/content/header.html"
+          /type "deny"
+          }
+          # -- END  --
+          /0014
+          {
+          /glob "*/home.html"
+          /type "deny"
+          }
+          /0015
+          {
+           /glob "*/tools.html"
+           /type "deny"
+          }
+          /0016
+            {
+            /glob "*/usageoverview.html"
+            /type "deny"
+            }
         }
           # The invalidate section defines the pages that are "invalidated" after
           # any activation. Please note that the activated page itself and all
