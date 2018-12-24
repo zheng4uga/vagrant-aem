@@ -63,10 +63,10 @@ aem::dispatcher::farm { '<%= client %>' :
   docroot => '/var/www/vhosts/<%=client %>',
 }
 
-apache::vhost { 'jenkins.localhost' :
-  docroot     => '/var/www/vhosts/jenkins',
-  port        => '80',
-}
+#apache::vhost { 'jenkins.localhost' :
+#  docroot     => '/var/www/vhosts/jenkins',
+#  port        => '80',
+#}
 
 apache::vhost { 'author.localhost' :
   docroot     => '/var/www/vhosts/author',
@@ -136,12 +136,12 @@ aem::instance { 'author' :
   manage_group    => false,
   manage_user     => false,
   port            => 4502,
-  runmodes        => ['localdev', 'local'],
+  runmodes        => ['author', 'dev','linux'],
   sample_content  => false,
   source          => '/vagrant/puppet/files/<%= File.basename(aem_jar) %>',
   type            => 'author',
   user            => 'vagrant',
-  version         => '6.1.0',
+  version         => '6.4.0',
   require         => File['/opt/aem'],
 }
 
@@ -153,12 +153,12 @@ aem::instance { 'publish' :
   manage_group    => false,
   manage_user     => false,
   port            => 4503,
-  runmodes        => ['localdev', 'local'],
+  runmodes        => ['publish', 'dev','linux'],
   sample_content  => false,
   source          => '/vagrant/puppet/files/<%= File.basename(aem_jar) %>',
   type            => 'publish',
   user            => 'vagrant',
-  version         => '6.1.0',
+  version         => '6.4.0',
   require         => File['/opt/aem'],
 }
 
@@ -168,7 +168,7 @@ aem::license { 'author' :
   home        => '/opt/aem/author',
   license_key => '<%= aem_license %>',
   user        => 'vagrant',
-  version     => '6.1.0',
+  version     => '6.4.0',
 }
 
 aem::license { 'publish' :
@@ -177,6 +177,6 @@ aem::license { 'publish' :
   home        => '/opt/aem/publish',
   license_key => '<%= aem_license %>',
   user        => 'vagrant',
-  version     => '6.1.0',
+  version     => '6.4.0',
 }
 
