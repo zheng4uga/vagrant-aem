@@ -70,6 +70,21 @@ def getParameters(param_file)
     params.dispatcher_mod = gets.chomp
   end
 
+  if params.content_zip.nil? || params.content_zip.empty?
+    print 'Path to content zip file: '
+    params.content_zip = gets.chomp
+  end
+
+   if params.ssl_package.nil? || params.ssl_package.empty?
+      print 'Path to SSL tar file: '
+      params.ssl_package = gets.chomp
+   end
+
+   if params.apps_package.nil? || params.apps_package.empty?
+     print 'Path to apps tar file: '
+     params.apps_package = gets.chomp
+   end
+
   if params.dispatcher_any.nil?
     print 'Custom dispatcher.any file: '
     params.dispatcher_any = gets.chomp

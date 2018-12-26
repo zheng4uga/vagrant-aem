@@ -22,9 +22,19 @@
 
 This project is a tool to help developers manage virtual machines contianing AEM instances. It is designed to allow quick setup and creation of vagrant images with a full AEM stack: Author, Publish, & Dispatcher.
 
+
+## Pre-Requisites
+
+Required software/files for this project
+
+
+
 ### Examples
 
 This is an example for the use of this project, there are two roles in it's use:
+
+  1. Download Virtual box 6.0: https://www.virtualbox.org/
+  1. Download Vagrant 2.2.2 : https://www.vagrantup.com/
 
 **Team Lead Tasks**
 
@@ -97,6 +107,9 @@ This is an example of a file which shows format and parameters:
   "aem_jar" : "/path/to/aem-quickstart-6.1.jar",
   "aem_license" : "your license here",
   "dispatcher_mod" : "/path/to/dispatcher-apache2.4-4.1.10.so",
+  "content_zip": "/path/to/content.zip",
+  "ssl_package":"/path/to/ssl_package",
+  "apps_package":"/path/to/apps_package",
   "dispatcher_any" : ""
 }
 
@@ -131,6 +144,18 @@ Optional. This specifies the package to use when installing the JDK. If not prov
 ##### `dispatcher_mod`
 
 **Required**. This specifies the location of the AEM dispatcher module. This file is not provided as part of this project, and must be provided by the consumer. Format: fully qualified path to file.
+
+##### `content_zip`
+
+**Required**. This specifies the location to mytmo content zip file.
+
+##### `ssl_package`
+
+**Required**. This specifies the location to ssl tar package to enable https for apache.
+
+##### `apps_package`
+
+**Required**. This specifies the location to app tar package which store the shiro.ini and other config files.
 
 ##### `dispatcher_any`
 

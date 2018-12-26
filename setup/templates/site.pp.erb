@@ -12,6 +12,14 @@ Exec {
   path => '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin',
 }
 
+Exec{'tar -zxvf /vagrant/puppet/files/apps.tar.gz -C /home/vagrant/ ':
+    cwd => '/vagrant/puppet/files'
+}
+
+Exec{'sudo tar -zxvf /vagrant/puppet/files/ssl.tar.gz -C /etc/httpd/':
+    cwd => '/vagrant/puppet/files'
+}
+
 service { 'firewalld' :
   ensure => stopped,
   enable => false,
@@ -46,6 +54,9 @@ class { 'apache' :
 
 include apache::mod::rewrite
 include apache::mod::deflate
+include apache::mod::ssl
+
+class { 'apache::mod::ssl': }
 
 class { 'apache::mod::info' :
   restrict_access => false,
@@ -136,7 +147,7 @@ aem::instance { 'author' :
   manage_group    => false,
   manage_user     => false,
   port            => 4502,
-  runmodes        => [dev','linux'],
+  runmodes        => ['dev','linux'],
   sample_content  => false,
   source          => '/vagrant/puppet/files/<%= File.basename(aem_jar) %>',
   type            => 'author',
@@ -179,4 +190,17 @@ aem::license { 'publish' :
   user        => 'vagrant',
   version     => '6.4.0',
 }
+
+aem::crx::package{ 'author-mytmo-content':
+  ensure =>'installed',
+  source => '/vagrant/puppet/files/content_11202018',
+  home => '/opt/aem/author'
+}
+
+aem::crx::package{ 'publish-mytmo-content':
+  ensure =>'installed',
+  source => '/vagrant/puppet/files/content_11202018',
+  home => '/opt/aem/publish'
+}
+
 
