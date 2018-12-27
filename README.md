@@ -23,18 +23,10 @@
 This project is a tool to help developers manage virtual machines contianing AEM instances. It is designed to allow quick setup and creation of vagrant images with a full AEM stack: Author, Publish, & Dispatcher.
 
 
-## Pre-Requisites
-
-Required software/files for this project
-
-
-
 ### Examples
 
 This is an example for the use of this project, there are two roles in it's use:
 
-  1. Download Virtual box 6.0: https://www.virtualbox.org/
-  1. Download Vagrant 2.2.2 : https://www.vagrantup.com/
 
 **Team Lead Tasks**
 
@@ -57,15 +49,21 @@ The end result is a standard work environment for the entire team, one that hope
 
 ### Prerequisites
 
- **Supporting Software**
- 1. Vagrant (v1.8.4)
-   1. Do not use v1.8.5; it has an [issue when updating the authorized keys](https://github.com/mitchellh/vagrant/issues/7610).
 
 
  **Required**
+  1. Download Virtual box 6.0: https://www.virtualbox.org/
+  1. Download Vagrant 2.2.2 : https://www.vagrantup.com/
   1. AEM Quickstart jar file
   1. AEM [Dispatcher module](https://www.adobeaemcloud.com/content/companies/public/adobe/dispatcher/dispatcher.html) for your web server
   1. AEM License Key for your client
+  1. Initial Content Package ( content_zip)
+  1. AEM apps package (apps_package)
+  1. Apache SSL certificate and key ( ssl_package)
+
+
+
+
   
   
  **Optional**
