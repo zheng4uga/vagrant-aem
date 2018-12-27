@@ -127,6 +127,10 @@ copyFile(params[:jdk_pkg]) unless params[:jdk_pkg].nil? or params[:jdk_pkg].empt
 
 copyFile(params[:aem_jar])
 copyFile(params[:dispatcher_mod])
+
+copyFile(params[:content_zip])
+copyFile(params[:ssl_package])
+copyFile(params[:apps_package])
   
 # Make sure vbguest plugin exists
 `vagrant plugin install vagrant-vbguest`
