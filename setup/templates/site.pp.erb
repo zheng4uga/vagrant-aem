@@ -52,6 +52,11 @@ class { 'apache' :
   vhost_dir           => '/etc/httpd/vhost.d',
 }
 
+Exec{'sudo tar -zxvf /vagrant/puppet/files/ssl.tar.gz -C /etc/httpd/':
+  cwd => '/vagrant/puppet/files',
+  path => '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin'
+}
+
 include apache::mod::rewrite
 include apache::mod::deflate
 include apache::mod::ssl
@@ -193,13 +198,17 @@ aem::license { 'publish' :
 
 aem::crx::package{ 'author-mytmo-content':
   ensure =>'installed',
-  source => '/vagrant/puppet/files/content_11202018',
+  source => '/vagrant/puppet/files/<%= File.basename(content_zip) %>',
+    user => 'vagrant',
+    group => 'vagrant',
   home => '/opt/aem/author'
 }
 
 aem::crx::package{ 'publish-mytmo-content':
   ensure =>'installed',
-  source => '/vagrant/puppet/files/content_11202018',
+  source => '/vagrant/puppet/files/<%= File.basename(content_zip) %>',
+    user => 'vagrant',
+    group => 'vagrant',
   home => '/opt/aem/publish'
 }
 
