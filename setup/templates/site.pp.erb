@@ -12,11 +12,7 @@ Exec {
   path => '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin',
 }
 
-Exec{'tar -zxvf /vagrant/puppet/files/apps.tar.gz -C /home/vagrant/ ':
-    cwd => '/vagrant/puppet/files'
-}
-
-Exec{'sudo tar -zxvf /vagrant/puppet/files/ssl.tar.gz -C /etc/httpd/':
+Exec{'tar -zxvf /vagrant/puppet/files/<%= File.basename(apps_package) %> -C /home/vagrant/ ':
     cwd => '/vagrant/puppet/files'
 }
 
@@ -52,7 +48,7 @@ class { 'apache' :
   vhost_dir           => '/etc/httpd/vhost.d',
 }
 
-Exec{'sudo tar -zxvf /vagrant/puppet/files/ssl.tar.gz -C /etc/httpd/':
+Exec{'sudo tar -zxvf /vagrant/puppet/files/<%= File.basename(ssl_package) %> -C /etc/httpd/':
   cwd => '/vagrant/puppet/files',
   path => '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin'
 }
@@ -199,16 +195,16 @@ aem::license { 'publish' :
 aem::crx::package{ 'author-mytmo-content':
   ensure =>'installed',
   source => '/vagrant/puppet/files/<%= File.basename(content_zip) %>',
-    user => 'vagrant',
-    group => 'vagrant',
+  user => 'vagrant',
+  group => 'vagrant',
   home => '/opt/aem/author'
 }
 
 aem::crx::package{ 'publish-mytmo-content':
   ensure =>'installed',
   source => '/vagrant/puppet/files/<%= File.basename(content_zip) %>',
-    user => 'vagrant',
-    group => 'vagrant',
+  user => 'vagrant',
+  group => 'vagrant',
   home => '/opt/aem/publish'
 }
 
