@@ -85,6 +85,11 @@ def getParameters(param_file)
      params.apps_package = gets.chomp
    end
 
+   if params.esapi_package.nil? || params.esapi_package.empty?
+     print 'Path to ESAPI tar file: '
+     params.esapi_package = gets.chomp
+   end
+
   if params.dispatcher_any.nil?
     print 'Custom dispatcher.any file: '
     params.dispatcher_any = gets.chomp
@@ -131,6 +136,7 @@ copyFile(params[:dispatcher_mod])
 copyFile(params[:content_zip])
 copyFile(params[:ssl_package])
 copyFile(params[:apps_package])
+copyFile(params[:esapi_package])
   
 # Make sure vbguest plugin exists
 `vagrant plugin install vagrant-vbguest`

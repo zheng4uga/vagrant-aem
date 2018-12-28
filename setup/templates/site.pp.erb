@@ -16,6 +16,10 @@ Exec{'tar -zxvf /vagrant/puppet/files/<%= File.basename(apps_package) %> -C /hom
     cwd => '/vagrant/puppet/files'
 }
 
+Exec{'tar -zxvf /vagrant/puppet/files/<%= File.basename(esapi_package) %> -C /home/vagrant/ ':
+    cwd => '/vagrant/puppet/files'
+}
+
 service { 'firewalld' :
   ensure => stopped,
   enable => false,
@@ -56,6 +60,7 @@ Exec{'sudo tar -zxvf /vagrant/puppet/files/<%= File.basename(ssl_package) %> -C 
 include apache::mod::rewrite
 include apache::mod::deflate
 include apache::mod::ssl
+include apache::mod::expires
 
 class { 'apache::mod::info' :
   restrict_access => false,
@@ -106,6 +111,7 @@ apache::vhost { '<%= client %>.localhost' :
   port            => '80',
 #  proxy_pass      => [],
   request_headers => ['unset Authorization'],
+  override => ['All'],
 #  rewrites        => [],
 }
 
