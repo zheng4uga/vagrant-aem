@@ -136,6 +136,16 @@ class { 'java' :
 
 <% end %>
 
+Exec{'sudo mv cacerts cacerts-bak':
+  path => '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin',
+  cwd => '/etc/pki/ca-trust/extracted/java'
+}
+
+Exec{'sudo mv ~/cacerts .':
+  path => '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin',
+  cwd => '/etc/pki/ca-trust/extracted/java'
+}
+
 # AEM Configurations
 
 file { '/opt/aem': 

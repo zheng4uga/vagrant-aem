@@ -58,14 +58,18 @@ The end result is a standard work environment for the entire team, one that hope
   1. AEM [Dispatcher module](https://www.adobeaemcloud.com/content/companies/public/adobe/dispatcher/dispatcher.html) for your web server
   1. AEM License Key for your client
   1. Initial Content Package ( content_zip)
+  1. Please ask Yong for a local_linux_config package which will convert all the window path reference into linux base
   1. AEM apps package (apps_package)
   1. Apache SSL certificate and key ( ssl_package)
+  1. If you have your local apache running, please stop local apache
+  1. Add this entry to your hosts file Mac(/etc/hosts)
+        1. 127.0.0.1 e3.my.t-mobile.com
+  1. Install vagrant scp ( vagrant plugin install vagrant-scp) https://medium.com/@smartsplash/using-scp-and-vagrant-scp-in-virtualbox-to-copy-from-guest-vm-to-host-os-and-vice-versa-9d2c828b6197
+  1. Grab a html.tar.gz file which should contains the complete angular application
+  1. Under your vagrantfile's location run vagrant scp /path/to/html.tar.gz :~
+  1. After that you need to do vagrant ssh and untar that html.tar.gz into your apache docroot which should be located at /var/www/<client_name>
+  1. Now you need to reload Vagrant by typing in vagrant reload and that should restart your virtual machine
 
-
-
-
-  
-  
  **Optional**
   1. Java JDK that is required for your client. [Java](http://www.oracle.com/technetwork/java/index.html) or [OpenJDK](http://openjdk.java.net/)
   1. Custom dispatcher.any file
@@ -108,6 +112,8 @@ This is an example of a file which shows format and parameters:
   "content_zip": "/path/to/content.zip",
   "ssl_package":"/path/to/ssl_package",
   "apps_package":"/path/to/apps_package",
+  "esapi_package":"/path/to/esapi_package",
+  "cacerts_path":"/path/to/cacerts",
   "dispatcher_any" : ""
 }
 
@@ -154,6 +160,15 @@ Optional. This specifies the package to use when installing the JDK. If not prov
 ##### `apps_package`
 
 **Required**. This specifies the location to app tar package which store the shiro.ini and other config files.
+
+
+##### `esapi_package`
+
+**Required**. This specifies the location to esapi tar package.
+
+##### `cacerts_path`
+
+**Required**. This specifies the location to cacerts file.
 
 ##### `dispatcher_any`
 
