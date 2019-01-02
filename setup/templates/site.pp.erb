@@ -38,8 +38,8 @@ $apache_dirs = [ '/var/www',
 
 file { $apache_dirs :
   ensure => directory,
-  owner  => 'root',
-  group  => 'root',
+  owner  => 'vagrant',
+  group  => 'vagrant',
   mode   => '0775',
   before => Class['apache'],
 }
