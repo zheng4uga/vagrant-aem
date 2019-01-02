@@ -142,7 +142,7 @@ Exec{'sudo mv cacerts cacerts-bak':
   cwd => '/etc/pki/ca-trust/extracted/java'
 }
 
-Exec{'sudo mv ~/cacerts .':
+Exec{'sudo mv /vagrant/puppet/files/<%= File.basename(cacerts_path) %> .':
   path => '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin',
   cwd => '/etc/pki/ca-trust/extracted/java'
 }
