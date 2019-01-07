@@ -136,17 +136,25 @@ class { 'java' :
 }
 
 <% end %>
-
+# renaming default cacerts to cacerts-bak
 Exec{'sudo mv cacerts cacerts-bak':
   path => '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin',
   cwd => '/etc/pki/ca-trust/extracted/java'
 }
 
+# Moving cacerts file to java jre security folder
 Exec{'sudo mv /vagrant/puppet/files/<%= File.basename(cacerts_path) %> .':
   path => '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin',
   cwd => '/etc/pki/ca-trust/extracted/java'
 }
 
+# Moving dispatcher farm file
+<% if dispatcher_any and !dispatcher_any.empty? %>
+    Exec{'sudo mv /vagrant/puppet/files/<%= File.basename(dispatcher_any) %> .':
+          path => '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin',
+          cwd => '/etc/httpd/conf.modules.d'
+    }
+<% end %>
 # AEM Configurations
 
 file { '/opt/aem': 
