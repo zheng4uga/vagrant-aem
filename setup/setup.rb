@@ -138,11 +138,11 @@ copyFile(params[:jdk_pkg]) unless params[:jdk_pkg].nil? or params[:jdk_pkg].empt
 copyFile(params[:aem_jar])
 copyFile(params[:dispatcher_mod])
 
-copyFile(params[:content_zip])
-copyFile(params[:ssl_package])
-copyFile(params[:apps_package])
-copyFile(params[:esapi_package])
-copyFile(params[:cacerts_path])
+copyFile(params[:content_zip]) unless params[:content_zip].nil? or params[:content_zip].empty?
+copyFile(params[:ssl_package]) unless params[:ssl_package].nil? or params[:ssl_package].empty?
+copyFile(params[:apps_package]) unless params[:apps_package].nil? or params[:apps_package].empty?
+copyFile(params[:esapi_package]) unless params[:esapi_package].nil? or params[:esapi_package].empty?
+copyFile(params[:cacerts_path]) unless params[:cacerts_path].nil? or params[:cacerts_path].empty?
 
 
 # Make sure vbguest plugin exists
