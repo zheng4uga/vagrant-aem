@@ -13,16 +13,16 @@ Exec {
 }
 <% if apps_package and !apps_package.empty? %>
 
-Exec{'tar -zxvf /vagrant/puppet/files/<%= File.basename(apps_package) %> -C /home/vagrant/ ':
-    cwd => '/vagrant/puppet/files'
-}
+    Exec{'tar -zxvf /vagrant/puppet/files/<%= File.basename(apps_package) %> -C /home/vagrant/ ':
+        cwd => '/vagrant/puppet/files'
+    }
 <% end %>
 
 <% if esapi_package and !esapi_package.empty? %>
 
-Exec{'tar -zxvf /vagrant/puppet/files/<%= File.basename(esapi_package) %> -C /home/vagrant/ ':
-    cwd => '/vagrant/puppet/files'
-}
+    Exec{'tar -zxvf /vagrant/puppet/files/<%= File.basename(esapi_package) %> -C /home/vagrant/ ':
+        cwd => '/vagrant/puppet/files'
+    }
 <% end %>
 
 service { 'firewalld' :
@@ -159,7 +159,7 @@ class { 'java' :
       path => '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin',
       cwd => '/etc/pki/ca-trust/extracted/java'
     }
-<% else %>
+<% end %>
 
 
 # Moving dispatcher farm file
