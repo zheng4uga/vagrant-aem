@@ -122,7 +122,7 @@ apache::vhost { '<%= client %>.localhost' :
     port            => '443',
     ssl      => true,
   <% else %>
-    port => '80'
+    port => '80',
   <% end %>
 #  proxy_pass      => [],
   request_headers => ['unset Authorization'],
