@@ -11,14 +11,19 @@ Package {
 Exec {
   path => '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin',
 }
+<% if apps_package and !apps_package.empty? %>
 
 Exec{'tar -zxvf /vagrant/puppet/files/<%= File.basename(apps_package) %> -C /home/vagrant/ ':
     cwd => '/vagrant/puppet/files'
 }
+<% end %>
+
+<% if esapi_package and !esapi_package.empty? %>
 
 Exec{'tar -zxvf /vagrant/puppet/files/<%= File.basename(esapi_package) %> -C /home/vagrant/ ':
     cwd => '/vagrant/puppet/files'
 }
+<% end %>
 
 service { 'firewalld' :
   ensure => stopped,
@@ -38,8 +43,8 @@ $apache_dirs = [ '/var/www',
 
 file { $apache_dirs :
   ensure => directory,
-  owner  => 'apache',
-  group  => 'apache',
+  owner  => 'vagrant',
+  group  => 'vagrant',
   mode   => '0775',
   before => Class['apache'],
 }
@@ -52,14 +57,19 @@ class { 'apache' :
   vhost_dir           => '/etc/httpd/vhost.d',
 }
 
-Exec{'sudo tar -zxvf /vagrant/puppet/files/<%= File.basename(ssl_package) %> -C /etc/httpd/':
-  cwd => '/vagrant/puppet/files',
-  path => '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin'
-}
+<% if ssl_package and !ssl_package.empty? %>
+    Exec{'sudo tar -zxvf /vagrant/puppet/files/<%= File.basename(ssl_package) %> -C /etc/httpd/':
+      cwd => '/vagrant/puppet/files',
+      path => '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin'
+    }
+<% end %>
 
 include apache::mod::rewrite
 include apache::mod::deflate
-include apache::mod::ssl
+<% if ssl_package and !ssl_package.empty? %>
+    include apache::mod::ssl
+<% end %>
+
 include apache::mod::expires
 
 class { 'apache::mod::info' :
@@ -137,16 +147,20 @@ class { 'java' :
 
 <% end %>
 # renaming default cacerts to cacerts-bak
-Exec{'sudo mv cacerts cacerts-bak':
-  path => '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin',
-  cwd => '/etc/pki/ca-trust/extracted/java'
-}
+<% if cacerts_path and !cacerts_path.empty? %>
 
-# Moving cacerts file to java jre security folder
-Exec{'sudo mv /vagrant/puppet/files/<%= File.basename(cacerts_path) %> .':
-  path => '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin',
-  cwd => '/etc/pki/ca-trust/extracted/java'
-}
+    Exec{'sudo mv cacerts cacerts-bak':
+      path => '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin',
+      cwd => '/etc/pki/ca-trust/extracted/java'
+    }
+
+    # Moving cacerts file to java jre security folder
+    Exec{'sudo mv /vagrant/puppet/files/<%= File.basename(cacerts_path) %> .':
+      path => '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin:/root/bin',
+      cwd => '/etc/pki/ca-trust/extracted/java'
+    }
+<% else %>
+
 
 # Moving dispatcher farm file
 <% if dispatcher_any and !dispatcher_any.empty? %>
@@ -214,23 +228,25 @@ aem::license { 'publish' :
   user        => 'vagrant',
   version     => '6.4.0',
 }
+<% if content_zip and !content_zip.empty? %>
 
-aem::crx::package{ 'author-mytmo-content':
-  ensure =>'installed',
-  source => '/vagrant/puppet/files/<%= File.basename(content_zip) %>',
-  user => 'vagrant',
-  group => 'vagrant',
-  home => '/opt/aem/author',
-    type => 'file'
-}
+    aem::crx::package{ 'author-mytmo-content':
+      ensure =>'installed',
+      source => '/vagrant/puppet/files/<%= File.basename(content_zip) %>',
+      user => 'vagrant',
+      group => 'vagrant',
+      home => '/opt/aem/author',
+        type => 'file'
+    }
 
-aem::crx::package{ 'publish-mytmo-content':
-  ensure =>'installed',
-  source => '/vagrant/puppet/files/<%= File.basename(content_zip) %>',
-  user => 'vagrant',
-  group => 'vagrant',
-  home => '/opt/aem/publish',
-    type => 'file'
-}
+    aem::crx::package{ 'publish-mytmo-content':
+      ensure =>'installed',
+      source => '/vagrant/puppet/files/<%= File.basename(content_zip) %>',
+      user => 'vagrant',
+      group => 'vagrant',
+      home => '/opt/aem/publish',
+        type => 'file'
+    }
+<% end %>
 
 
