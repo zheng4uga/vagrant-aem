@@ -118,8 +118,12 @@ apache::vhost { '<%= client %>.localhost' :
 ',
   default_vhost   => true,
   docroot         => '/var/www/vhosts/<%= client %>',
-  port            => '443',
-  ssl      => true,
+  <% if ssl_package and !ssl_package.empty? %>
+    port            => '443',
+    ssl      => true,
+  <% else %>
+    port => '80'
+  <% end %>
 #  proxy_pass      => [],
   request_headers => ['unset Authorization'],
   override => ['All'],
